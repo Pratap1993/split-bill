@@ -1,0 +1,27 @@
+version: '3'
+services:
+  postgresqldb:
+    image: postgres
+    expose:
+      - '5432'
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_PASSWORD=chagu123
+      - POSTGRES_USER=chagu
+      - POSTGRES_DB=splitbilldb
+
+  app:
+    container_name: splitbill-app
+    image: pratap1993/splitbill-app
+    build: .
+    expose:
+      - '8085'
+    ports:
+      - '8085:8085'
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresqldb:5432/splitbilldb
+      SPRING_DATASOURCE_USERNAME: chagu
+      SPRING_DATASOURCE_PASSWORD: chagu123
+    depends_on:
+      - postgresqldb
